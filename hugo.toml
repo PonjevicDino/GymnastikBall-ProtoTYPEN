@@ -1,0 +1,13 @@
+baseURL = ''
+languageCode = 'en-us'
+title = 'DPP Documentation'
+theme = ["hugo-video", "hugo-book"]
+
+
+# Needed for mermaid/katex shortcodes
+[markup]
+[markup.goldmark.renderer]
+  unsafe = true
+
+[params]
+  BookComments = false

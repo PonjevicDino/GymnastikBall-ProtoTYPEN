@@ -1,0 +1,4 @@
+---
+type: docs
+bookCollapseSection: true
+---
