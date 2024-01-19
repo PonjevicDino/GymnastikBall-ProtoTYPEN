@@ -1,9 +1,9 @@
 ---
-title: Our project name
+title: Gymnastic ball as a mouse
 type: docs
 ---
 
-# Gymnastic ball Mouse Input
+# Gymnastic ball mouse input
 
 ## Abstract
 
@@ -119,6 +119,71 @@ address to *0x68* (for the *second* sensor), we could redirect the data to an an
 three axis from each sensor.
 
 ### Step №6: Mapping the data to a mouse input
+
+The user *T-vK* on GitHub created and shared a mouse library, which uses the *ESP32* Bluetooth controller to simulate a computer mouse. The connected device 
+i.e. a laptop or a phone therefore cannot distinguish between a "normal" mouse and the *ESP32*. That's why, we just needed to send the movements to the 
+corresponding function and the cursor will move reliably.
+```c++
+void setup(void) {
+	[...]
+	bleMouse.begin();
+	[...]
+}
+
+void loop() {
+	[...]
+	if(bleMouse.isConnected()) bleMouse.move(x,y);
+	[...]
+}
+```
+
+### Step №7: Calculate x and y
+
+At the beginning we had the idea to use one *ICM-20948* for the horizontal movement, the other for the vercial and both together for the click-calculation. 
+We then mapped the X- and the Y-Axis from sensor one directy to the *bleMouse.move*-function for testing and the mouse cursor was directly moving quite well.
+After that, we changed our approach to using sensor one for the movement and sensor two solely for clicking.
+*TODO: Insert Video of the first mouse movement*
+
+### Step №8: Soldering rework and mounting everything to the gymnastic ball
+
+Before we could mount the sensors and the *ESP32* to the (moving) gymnastic ball, we needed to consider one problem - the length, stiffness and count of 
+cables. Furthermore, we would need to improve the connection points to withstand the force while everything is moving. To do that, we've got an *XLR*-cable, 
+which has six wires inside, everyone isolated from each other and a "global" isolation layer. Then we measured the needed length of the calbes, cut them open 
+and resoldered everything back together, not noticing, that we've created a short circuit on one of the sensors. Two cables were touching each other next to 
+the soldering point, ... but that's nothing a bit of duct tape cannot fix.
+
+### Step №9: Optimizing the software
+
+Because we mounted the first sensor to the back of the gymnastic ball, the orientation had changed. Therefore we needed to remap the axis of the accelerometer 
+to the mouse function. At the end, it was the **Y-Axis** for the **X**-Movement and the the **Z-Axis** for the **Y-Movement** of the mouse cursor. We also 
+created a "smoothing"-function to prevent jittering, a dead-spot zone and a sensitivity variable.
+
+### Step №10: Click, click
+
+The second sensor, which **Z**-Movement is responsible for triggering a click, was mounted also on the side of the ball at the beginning. It should measure 
+the squeezing and therefore the horizontal expansion of the gymnastic ball. But the sensor was not able to distinguish between a click and a rapid change in 
+horizontal movement, and if we set sensitivity to a low value, you would have to jump quite "fast". The top point of the ball moves at most, when a click-
+action is done, therefore we mounted the second sensor near to this point but without interfering with the participants movement.
+
+### Step №11: 3D-Printing
+
+To be able to do the "finetuning" of the software, we needed to have the sensors at the exact same position at every run. Duct tape was not a satisfactory 
+result, because it kept falling off. We then printed two "boxes" for the *ICM-20948*s and one for the *ESP32*, all three with a round mounting surface, which 
+could be glued to the gymnastic ball.
+
+### Step №12: Optimizing and finetuning the software ... again
+
+With the new fixed sensor positions we could calculate the click movement. The final function calculates the difference of each of the last ten sensor 
+inputs between its average. If the value is over a set threshold and the last click was a fixed time ago, it would trigger a click. In this way, the 
+triggering is also less dependend on the participants weight then if the sensor would be mounted on the side.
+
+### Step №12: What to show at the presentation?
+
+To do some "work" in the Windows-Environment, the input fields were quite small and not triggerable in a short period of time. A full fledged game was also 
+not a solution, because then we needed to explain the controls to everyone individually. Therefore, we created a simple "accuracy" WebTool, in which a 
+circle (with decreasing size) appears every few seconds and the participant had to click it as fast as possible. The count of the clicked circles is then 
+saved in a simple scoreboard. Finally to find the mouse at the begin of each "game", we created a simple Python program, which resets the mouse cursor to 
+the middle of the screen, when a specific key is pressed. - In our case, the **CTRL** key.
 
 ## Conclusion
 
