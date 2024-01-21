@@ -19,12 +19,14 @@ directly at the start of the prototyping phase. During the processing of the ord
 *ICM-20948* gyros and a *ESP32 Feather* as the corresponding microcontroller for testing. Furthermore, the ESP32 has a integrated Bluetooth module, which
 will become handy at a later point. Finding a second hand gymnastic ball near Hagenberg was quite easy (we got it for free).
 
+{{< figure src="gyro.jpg" width="50%" caption="*ICM-20948*">}}
+{{< figure src="esp32.jpg" width="50%" caption="*ESP32 Feather*">}}
+
 ## Step №1: Connecting the parts together (... and hope, that it doesn't explode)
 
 None of us had real experience in soldering before the prototyping courses. An other "problem" was the small size of the pins and PCB-holes. To make the
 process easier, we connected one gyro via header pins to a larger prototyping PCB. The same steps were also done for the *ESP32*. The connection between
-the microcontroller and the gyro was established (via cables) with the following pins:
-*TODO: Insert Photo of the Gyro PinLayout*
+the microcontroller and the gyro was established (via cables) with the following pins (the PinLayout of the ICM-20948 gyro can be seen in Step №0):
 | Pin on ESP32 | Pin on ICM-20948 | Explanation                                                                           |
 | ----         | ----             | :----                                                                                 |
 | 5V           | VIN              | Provides 5V power. The gyro has a step-down converter, which changes the 5V to 3V-DC. |
@@ -35,9 +37,13 @@ the microcontroller and the gyro was established (via cables) with the following
 Afterwards we then provided power to the microcontroller via the USB Port and a small red LED-light on the gyroscope indicates, that it is providing data.
 No smoke, no fire and even the laptop didn't shut down ... good!
 
+{{< figure src="soldering.JPEG" width="100%" caption="*Soldering*">}}
+
+{{< figure src="wiring.JPEG" width="100%" caption="*Wired together*">}}
+
 ## Step №2: Get the data from the gyroscope
 
-Now, that we had a working hardware connection, we needed to write some code, to get the values from the gyro-sensors. Thankfully, there is a "Qucik Setup" 
+Now, that we had a working hardware connection, we needed to write some code, to get the values from the gyro-sensors. Thankfully, there is a "Quick Setup" 
 Tutorial on the [Adafruit Website](https://learn.adafruit.com/adafruit-tdk-invensense-icm-20948-9-dof-imu/arduino), where the needed libraries are shown and 
 some example code is provided. Even if the code is originally meant for the Arduino, we tried it on the ESP32 Feather ... and we got some data! The formating 
 of the serial output was quite bad, but that could be changed later.
@@ -49,6 +55,8 @@ is normally used, which initialises itself at startup and measures the differenc
 sensors on board, an accelerometer, a gyroscope, an angular velocity sensor and a temperature sensor. Sadly, the gyroscope provided confusing data, beacuse 
 it did not initialize properly at startup and the values got reset to zero after a short time without any movement. After some brainstorming on how to get 
 the current rotation of the sensor, we had the idea to find a parameter, which is always the same, regardless of the current rotation ... **gravity!**
+
+{{< figure src="brainstorming.JPEG" width="100%" caption="*Heavy brainstorming work*">}}
 
 ## Step №3.1: Gravity + accelerometer = ❤
 
@@ -66,6 +74,8 @@ We've done step №1 again, until we reached that part, where we needed to conne
 didn't reach the current limit of the microcontroller. The clock signal could also be sent to both sensors at the same time via the same pin, but the return 
 channel was the problematic one. There was a way using the *STEMMA QT* protocoll, which provides the ability to daisy-chain multiple sensors together, but 
 this required spectial cables/connectors and the time was running.
+
+{{< figure src="daisy-chain.JPEG" caption="*Daisy-Chaining*">}}
 
 ## Step №4.1: The I2C protocoll ... simplified
 
@@ -111,15 +121,16 @@ void loop() {
 At the beginning we had the idea to use one *ICM-20948* for the horizontal movement, the other for the vercial and both together for the click-calculation. 
 We then mapped the X- and the Y-Axis from sensor one directy to the *bleMouse.move*-function for testing and the mouse cursor was directly moving quite well.
 After that, we changed our approach to using sensor one for the movement and sensor two solely for clicking.
-*TODO: Insert Video of the first mouse movement*
+{{< figure src="mouse.gif" caption="*First mouse movement*">}}
 
 ## Step №8: Soldering rework and mounting everything to the gymnastic ball
 
 Before we could mount the sensors and the *ESP32* to the (moving) gymnastic ball, we needed to consider one problem - the length, stiffness and count of 
 cables. Furthermore, we would need to improve the connection points to withstand the force while everything is moving. To do that, we've got an *XLR*-cable, 
-which has six wires inside, everyone isolated from each other and a "global" isolation layer. Then we measured the needed length of the calbes, cut them open 
+which has six wires inside, everyone isolated from each other and a "global" isolation layer. Then we measured the needed length of the cables, cut them open 
 and resoldered everything back together, not noticing, that we've created a short circuit on one of the sensors. Two cables were touching each other next to 
 the soldering point, ... but that's nothing a bit of duct tape cannot fix.
+{{< figure src="prototype-v1.JPEG" width="100%" caption="*Lukas is happy with our prototype V1*">}}
 
 ## Step №9: Optimizing the software
 
@@ -139,6 +150,10 @@ action is done, therefore we mounted the second sensor near to this point but wi
 To be able to do the "finetuning" of the software, we needed to have the sensors at the exact same position at every run. Duct tape was not a satisfactory 
 result, because it kept falling off. We then printed two "boxes" for the *ICM-20948*s and one for the *ESP32*, all three with a round mounting surface, which 
 could be glued to the gymnastic ball.
+{{< figure src="3D_click.JPG" caption="*Box for ICM-20948*">}}
+{{< figure src="3D_ESP_battery.JPG" caption="*Box for ESP32*">}}
+{{< figure src="glueing.JPEG" width="100%" caption="***Question:** How many fingers did we need to glue it together? **Answer:** 13!*">}}
+{{< figure src="final.jpg" width="100%" caption="*Final Prototype*">}}
 
 ## Step №12: Optimizing and finetuning the software ... again
 
@@ -153,3 +168,5 @@ not a solution, because then we needed to explain the controls to everyone indiv
 circle (with decreasing size) appears every few seconds and the participant had to click it as fast as possible. The count of the clicked circles is then 
 saved in a simple scoreboard. Finally to find the mouse at the begin of each "game", we created a simple Python program, which resets the mouse cursor to 
 the middle of the screen, when a specific key is pressed. - In our case, the **CTRL** key.
+
+{{< figure src="presentation.gif" caption="">}}
