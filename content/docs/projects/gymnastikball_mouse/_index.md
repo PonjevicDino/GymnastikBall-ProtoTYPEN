@@ -15,6 +15,8 @@ movements into digital cursor control with precision. This project not only chal
 and wireless communication, but also fostered creative problem-solving. Culminating in a playful yet functional device, the Gymnastic Ball Mouse 
 exemplifies our innovative approach to combining technology with physical activity for an engaging computer experience.
 
+{{< figure src="ProtoTYPEN.jpg#center" width="50%" caption="*The ProtoTYPEN group*">}}
+
 ## Introduction
 
 We set out on the challenging task to develop the Gymnastic Ball Mouse, aiming to merge the practicality of a computer mouse with the physical engagement 
@@ -24,7 +26,7 @@ Therefore, the "ProtoTypen"-Team introdudes the
 
 **Gymnastic ball as an mouse input!** - We didn't find another name...
 
-It completes the task above, but creates many problems at the same time, i.e. decreased pointer accuracy any many *"Where is my cursor?"* moments.
+It completes the task above, but creates many problems at the same time, i.e. decreased pointer accuracy and many *"Where is my cursor?"* moments.
 
 -> Chindōgu approved!
 
@@ -41,7 +43,7 @@ The full paper of the **ChairIO** can be found [here](https://www.researchgate.n
 
 ## Implementation 
 
-A fully step-by-step timeline of the implementation of the project can be found [here]({{< ref "implementation_sbs" >}})
+A fully step-by-step timeline (incl. pictures) of the project-implementation can be found [here]({{< ref "implementation_sbs" >}})
 
 ### Concept Development:
 

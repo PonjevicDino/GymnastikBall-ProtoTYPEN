@@ -38,7 +38,6 @@ Afterwards we then provided power to the microcontroller via the USB Port and a 
 No smoke, no fire and even the laptop didn't shut down ... good!
 
 {{< figure src="soldering.JPEG" width="100%" caption="*Soldering*">}}
-
 {{< figure src="wiring.JPEG" width="100%" caption="*Wired together*">}}
 
 ## Step №2: Get the data from the gyroscope
@@ -73,7 +72,7 @@ At the end, we had one variable ... **a three dimensional vector (x, y, z)**.
 We've done step №1 again, until we reached that part, where we needed to connect the cables to the ESP32 again. 5V-DC and ground were simple, because we 
 didn't reach the current limit of the microcontroller. The clock signal could also be sent to both sensors at the same time via the same pin, but the return 
 channel was the problematic one. There was a way using the *STEMMA QT* protocoll, which provides the ability to daisy-chain multiple sensors together, but 
-this required spectial cables/connectors and the time was running.
+this required spectial cables/connectors and the time was running. So we needed to connect both sensors to the same pins via a "Y-Splitter" connection.
 
 {{< figure src="daisy-chain.JPEG" caption="*Daisy-Chaining*">}}
 
@@ -121,7 +120,7 @@ void loop() {
 At the beginning we had the idea to use one *ICM-20948* for the horizontal movement, the other for the vercial and both together for the click-calculation. 
 We then mapped the X- and the Y-Axis from sensor one directy to the *bleMouse.move*-function for testing and the mouse cursor was directly moving quite well.
 After that, we changed our approach to using sensor one for the movement and sensor two solely for clicking.
-{{< figure src="mouse.gif" caption="*First mouse movement*">}}
+{{< video src="mouse.mp4" caption="*First mouse movement*">}}
 
 ## Step №8: Soldering rework and mounting everything to the gymnastic ball
 
@@ -151,8 +150,8 @@ To be able to do the "finetuning" of the software, we needed to have the sensors
 result, because it kept falling off. We then printed two "boxes" for the *ICM-20948*s and one for the *ESP32*, all three with a round mounting surface, which 
 could be glued to the gymnastic ball.
 {{< figure src="3D_click.JPG" caption="*Box for ICM-20948*">}}
-{{< figure src="3D_ESP_battery.JPG" caption="*Box for ESP32*">}}
-{{< figure src="glueing.JPEG" width="100%" caption="***Question:** How many fingers did we need to glue it together? **Answer:** 13!*">}}
+{{< figure src="3D_ESP_battery.JPG" caption="*Box for ESP32 + for the power bank*">}}
+{{< figure src="glueing.JPEG" width="100%" caption="***Question:** How many fingers did we need to glue it together? **Answer:** 14!*">}}
 {{< figure src="final.jpg" width="100%" caption="*Final Prototype*">}}
 
 ## Step №12: Optimizing and finetuning the software ... again
@@ -169,4 +168,4 @@ circle (with decreasing size) appears every few seconds and the participant had 
 saved in a simple scoreboard. Finally to find the mouse at the begin of each "game", we created a simple Python program, which resets the mouse cursor to 
 the middle of the screen, when a specific key is pressed. - In our case, the **CTRL** key.
 
-{{< figure src="presentation.gif" caption="">}}
+{{< video src="presentation.mp4" caption="">}}
